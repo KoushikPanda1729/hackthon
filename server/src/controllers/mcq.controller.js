@@ -1,12 +1,12 @@
 import { MCQ } from "../models/mcq.model.js";
 import ApiError from "../utils/ApiErrors.util.js";
+import asyncHandler from "../utils/asyncHandler.util.js";
 import ApiResponces from "./../utils/ApiResponces.util.js";
 
-const createMCQ = async (req, res) => {
+const createMCQ = asyncHandler(async (req, res) => {
   try {
     const { question, answers, category } = req.body;
 
-    // Ensure exactly one correct answer
     const correctAnswersCount = answers.filter(
       (answer) => answer.isCorrect
     ).length;
@@ -39,9 +39,9 @@ const createMCQ = async (req, res) => {
       .status(500)
       .json(new ApiError(400, "Error creating MCQ", error.message));
   }
-};
+});
 
-const getAllMCQs = async (req, res) => {
+const getAllMCQs = asyncHandler(async (req, res) => {
   try {
     const { category } = req.query;
     const query = category ? { category } : {};
@@ -62,9 +62,9 @@ const getAllMCQs = async (req, res) => {
       error: error.message,
     });
   }
-};
+});
 
-const updateMCQ = async (req, res) => {
+const updateMCQ = asyncHandler(async (req, res) => {
   try {
     const { id } = req.params;
     const { question, answers, category } = req.body;
@@ -102,9 +102,9 @@ const updateMCQ = async (req, res) => {
       .status(500)
       .json({ message: "Error updating MCQ", error: error.message });
   }
-};
+});
 
-const deleteMCQ = async (req, res) => {
+const deleteMCQ = asyncHandler(async (req, res) => {
   try {
     const { id } = req.params;
     const deletedMCQ = await MCQ.findByIdAndDelete(id);
@@ -121,17 +121,17 @@ const deleteMCQ = async (req, res) => {
       .status(500)
       .json({ message: "Error deleting MCQ", error: error.message });
   }
-};
+});
 
-const getObtainedMarks = async (req, res) => {
+const getObtainedMarks = asyncHandler(async (req, res) => {
   try {
-    const answers = req.body; // The array of user answers
+    const answers = req.body;
     let obtainedMarks = 0;
+    const results = [];
 
     for (const answer of answers) {
       const { questionId, answerId } = answer;
 
-      // Find the MCQ in the database
       const mcq = await MCQ.findById(questionId);
 
       if (!mcq) {
@@ -142,21 +142,36 @@ const getObtainedMarks = async (req, res) => {
 
       const correctAnswer = mcq.answers.find((ans) => ans.isCorrect === true);
 
-      if (correctAnswer  && correctAnswer._id.toString() === answerId) {
+      const isCorrect =
+        correctAnswer && correctAnswer._id.toString() === answerId;
+
+      if (isCorrect) {
         obtainedMarks += 1;
       }
+
+      results.push({
+        questionId: mcq._id,
+        question: mcq.question,
+        userAnswer: mcq.answers.find((ans) => ans._id.toString() === answerId),
+        correctAnswer,
+        correct: isCorrect,
+      });
     }
 
     return res
       .status(200)
       .json(
-        new ApiResponces(200, { obtainedMarks }, "Marks obtained successfully")
+        new ApiResponces(
+          200,
+          { obtainedMarks, results },
+          "Marks obtained successfully"
+        )
       );
   } catch (error) {
     return res
       .status(500)
       .json(new ApiError(500, "Error calculating marks", error.message));
   }
-};
+});
 
 export { createMCQ, getAllMCQs, updateMCQ, deleteMCQ, getObtainedMarks };
