@@ -1,0 +1,47 @@
+.SignUpPage {
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: var(--color-secondary);
+  align-items: center;
+
+  .loginForm {
+    padding: 2rem;
+    background-color: var(--color-primary);
+
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 1rem;
+
+    .link {
+      text-decoration: none;
+      color: var(--color-secondary);
+      & span {
+        color: rgb(137, 137, 255);
+      }
+    }
+  }
+}
+
+.inputField {
+  margin-bottom: 1.5rem;
+}
+
+.errorMessage {
+  color: red;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.loginButton {
+  margin-top: 20px;
+  background-color: var(--color-secondary) !important;
+  color: var(--color-primary) !important;
+  font-weight: bold !important;
+}

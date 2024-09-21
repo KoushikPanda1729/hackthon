@@ -126,6 +126,7 @@ const deleteMCQ = async (req, res) => {
 const getObtainedMarks = async (req, res) => {
   try {
     const { answers } = req.body;
+    console.log(answers);
     let obtainedMarks = 0;
 
     for (const answer of answers) {
