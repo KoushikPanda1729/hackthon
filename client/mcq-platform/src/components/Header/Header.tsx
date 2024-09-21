@@ -5,15 +5,20 @@ import { AuthContext } from "../../contexts/AuthContext";
 
 interface HeaderProps {
   isAuthPage?: boolean;
+  isAdminPage?: boolean;
 }
 
-const Header: FC<HeaderProps> = ({ isAuthPage = false }) => {
+const Header: FC<HeaderProps> = ({
+  isAuthPage = false,
+  isAdminPage = false,
+}) => {
   const { logout } = useContext(AuthContext);
 
-  return (
-    <header className={styles.Header}>
-      <h3 className={styles.logo}>HireLens</h3>
-      {!isAuthPage && (
+  if (isAdminPage) {
+    return (
+      <header className={styles.Header}>
+        <h3 className={styles.logo}>HireLens </h3>
+        <h4>Admin DashBoard</h4>
         <Button
           variant="contained"
           color="primary"
@@ -22,9 +27,25 @@ const Header: FC<HeaderProps> = ({ isAuthPage = false }) => {
         >
           Log Out
         </Button>
-      )}
-    </header>
-  );
+      </header>
+    );
+  } else {
+    return (
+      <header className={styles.Header}>
+        <h3 className={styles.logo}>HireLens</h3>
+        {!isAuthPage && (
+          <Button
+            variant="contained"
+            color="primary"
+            className={styles.logoutButton}
+            onClick={logout}
+          >
+            Log Out
+          </Button>
+        )}
+      </header>
+    );
+  }
 };
 
 export default Header;

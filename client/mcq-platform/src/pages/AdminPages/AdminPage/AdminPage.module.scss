@@ -1,1 +1,11 @@
-.AdminPage {}
+.AdminPage {
+    padding: 6rem 2rem;
+
+    .adminBox {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 2rem;
+
+    }
+}
