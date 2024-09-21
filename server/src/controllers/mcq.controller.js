@@ -123,15 +123,17 @@ const deleteMCQ = asyncHandler(async (req, res) => {
   }
 });
 
-const createResultReport = asyncHandler(async (req, res) => {
+const createResultReport = async (req, res) => {
   try {
-    const answers = req.body;
+    const answers = req.body; // The array of user answers
     let obtainedMarks = 0;
+    const totalMarks = answers.length;
     const results = [];
 
     for (const answer of answers) {
-      const { questionId, answerId } = answer;
+      const { questionId, answerId, timeSpent } = answer;
 
+      // Find the MCQ in the database
       const mcq = await MCQ.findById(questionId);
 
       if (!mcq) {
@@ -141,37 +143,46 @@ const createResultReport = asyncHandler(async (req, res) => {
       }
 
       const correctAnswer = mcq.answers.find((ans) => ans.isCorrect === true);
+      const userAnswer = mcq.answers.find(
+        (ans) => ans._id.toString() === answerId
+      );
 
       const isCorrect =
         correctAnswer && correctAnswer._id.toString() === answerId;
 
+      // Add to the total marks if the answer is correct
       if (isCorrect) {
         obtainedMarks += 1;
       }
 
+      // Add this question's result to the results array
       results.push({
         questionId: mcq._id,
         question: mcq.question,
-        userAnswer: mcq.answers.find((ans) => ans._id.toString() === answerId),
-        correctAnswer,
-        correct: isCorrect,
+        userAnswerText: userAnswer ? userAnswer : null, // Text of the user's selected answer
+        correctAnswerText: correctAnswer ? correctAnswer : null, // Text of the correct answer
+        isCorrect: isCorrect,
+        timeSpent: timeSpent, // Time spent on this question
       });
     }
 
-    return res
-      .status(200)
-      .json(
-        new ApiResponces(
-          200,
-          { obtainedMarks, results },
-          "Marks obtained successfully"
-        )
-      );
+    // Return the final report
+    return res.status(200).json(
+      new ApiResponces(
+        200,
+        {
+          obtainedMarks,
+          totalMarks,
+          results, // List of question results
+        },
+        "Marks obtained successfully"
+      )
+    );
   } catch (error) {
     return res
       .status(500)
       .json(new ApiError(500, "Error calculating marks", error.message));
   }
-});
+};
 
 export { createMCQ, getAllMCQs, updateMCQ, deleteMCQ, createResultReport };

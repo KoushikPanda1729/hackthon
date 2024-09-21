@@ -16,11 +16,15 @@ export const fetchAllMcqs = async () => {
 export interface QuizResult {
   questionId: string;
   answerId: string | null;
+  timeSpent: number;
 }
 
 export const submitQuiz = async (quizResults: QuizResult[]) => {
   try {
-    const response = await axios.post("/api/v1/mcqs/result", { quizResults });
+    const response = await axios.post(
+      "/api/v1/questions/mcqs/result",
+      quizResults
+    );
     console.log("Quiz results submitted:", response.data);
     return response.data; // Return the data from the response
   } catch (error) {

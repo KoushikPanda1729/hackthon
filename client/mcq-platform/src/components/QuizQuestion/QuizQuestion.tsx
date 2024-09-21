@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import styles from "./QuizQuestion.module.scss";
-import { submitQuiz } from "../../services/api/questionService";
+import { QuizResult, submitQuiz } from "../../services/api/questionService";
 import ResultPage from "../../pages/UserPages/ResultPage/ResultPage";
 
 export interface Answer {
@@ -31,9 +31,7 @@ interface QuizQuestionProps {
 const QuizQuestion: FC<QuizQuestionProps> = ({ quizData }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-  const [answers, setAnswers] = useState<
-    { questionId: string; answerId: string | null }[]
-  >([]);
+  const [answers, setAnswers] = useState<QuizResult[]>([]);
   const [isQuizComplete, setIsQuizComplete] = useState(false); // Track if the quiz is completed
 
   const questionTime = 10;
@@ -65,21 +63,27 @@ const QuizQuestion: FC<QuizQuestionProps> = ({ quizData }) => {
   };
 
   const handleNextQuestion = () => {
-    setAnswers((prevAnswers) => [
-      ...prevAnswers,
+    // Include the current question and selected answer in the answers array
+    const updatedAnswers = [
+      ...answers,
       {
         questionId: quizData[currentQuestion]._id,
         answerId: selectedAnswer,
+        timeSpent: questionTime - timeLeft,
       },
-    ]);
+    ];
 
+    setAnswers(updatedAnswers); // Update the answers state
+
+    // Check if it's the last question
     if (currentQuestion < quizData.length - 1) {
+      // Move to the next question
       setCurrentQuestion(currentQuestion + 1);
-      console.log("Quiz submitted", answers);
     } else {
+      // Submit the quiz after updating the answers array
       setIsQuizComplete(true);
-      submitQuiz(answers);
-      console.log("Quiz submitted", answers);
+      submitQuiz(updatedAnswers); // Submit the updated answers array
+      console.log("Quiz submitted", updatedAnswers);
     }
   };
 
