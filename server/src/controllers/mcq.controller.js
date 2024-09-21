@@ -125,8 +125,7 @@ const deleteMCQ = async (req, res) => {
 
 const getObtainedMarks = async (req, res) => {
   try {
-    const { answers } = req.body;
-    console.log(answers);
+    const answers = req.body; // The array of user answers
     let obtainedMarks = 0;
 
     for (const answer of answers) {
@@ -141,12 +140,10 @@ const getObtainedMarks = async (req, res) => {
           .json(new ApiError(404, `MCQ not found for ID: ${questionId}`));
       }
 
-      // Find the correct answer from the database
       const correctAnswer = mcq.answers.find((ans) => ans.isCorrect === true);
 
-      // Compare the user's answer with the correct answer
-      if (correctAnswer && correctAnswer._id === answerId) {
-        obtainedMarks += 1; // Increase marks for each correct answer
+      if (correctAnswer  && correctAnswer._id.toString() === answerId) {
+        obtainedMarks += 1;
       }
     }
 
