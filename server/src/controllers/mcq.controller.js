@@ -123,7 +123,7 @@ const deleteMCQ = asyncHandler(async (req, res) => {
   }
 });
 
-const getObtainedMarks = asyncHandler(async (req, res) => {
+const createResultReport = asyncHandler(async (req, res) => {
   try {
     const answers = req.body;
     let obtainedMarks = 0;
@@ -174,4 +174,4 @@ const getObtainedMarks = asyncHandler(async (req, res) => {
   }
 });
 
-export { createMCQ, getAllMCQs, updateMCQ, deleteMCQ, getObtainedMarks };
+export { createMCQ, getAllMCQs, updateMCQ, deleteMCQ, createResultReport };
