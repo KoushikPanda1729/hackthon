@@ -65,6 +65,9 @@ const LoginForm: FC = () => {
                 "& label": {
                   color: "#e2dfd0", // Label color
                 },
+                "& .MuiOutlinedInput-input": {
+                  color: "#ffffff",
+                },
               }}
             />
           </div>
@@ -96,6 +99,9 @@ const LoginForm: FC = () => {
                 },
                 "& label": {
                   color: "#e2dfd0", // Label color
+                },
+                "& .MuiOutlinedInput-input": {
+                  color: "#ffffff",
                 },
               }}
             />

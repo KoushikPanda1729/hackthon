@@ -65,6 +65,9 @@ const SignUpPage: FC<SignUpPageProps> = () => {
                 "& label": {
                   color: "#e2dfd0", // Label color
                 },
+                "& .MuiOutlinedInput-input": {
+                  color: "#ffffff",
+                },
               }} // Outlined variant
               // Outlined variant
             />
@@ -96,6 +99,9 @@ const SignUpPage: FC<SignUpPageProps> = () => {
                 "& label": {
                   color: "#e2dfd0", // Label color
                 },
+                "& .MuiOutlinedInput-input": {
+                  color: "#ffffff",
+                },
               }} // Outlined variant
             />
           </div>
@@ -125,6 +131,9 @@ const SignUpPage: FC<SignUpPageProps> = () => {
                 },
                 "& label": {
                   color: "#e2dfd0", // Label color
+                },
+                "& .MuiOutlinedInput-input": {
+                  color: "#ffffff",
                 },
               }} // Outlined variant
             />
