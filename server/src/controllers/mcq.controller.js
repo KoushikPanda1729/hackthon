@@ -2,7 +2,6 @@ import { MCQ } from "../models/mcq.model.js";
 import ApiError from "../utils/ApiErrors.util.js";
 import ApiResponces from "./../utils/ApiResponces.util.js";
 
-// Create a new MCQ
 const createMCQ = async (req, res) => {
   try {
     const { question, answers, category } = req.body;
@@ -42,7 +41,6 @@ const createMCQ = async (req, res) => {
   }
 };
 
-// Get all MCQs, optionally filter by category
 const getAllMCQs = async (req, res) => {
   try {
     const { category } = req.query;
@@ -57,13 +55,11 @@ const getAllMCQs = async (req, res) => {
   }
 };
 
-// Update an existing MCQ
 const updateMCQ = async (req, res) => {
   try {
     const { id } = req.params;
     const { question, answers, category } = req.body;
 
-    // Ensure exactly one correct answer
     const correctAnswersCount = answers.filter(
       (answer) => answer.isCorrect
     ).length;
@@ -99,7 +95,6 @@ const updateMCQ = async (req, res) => {
   }
 };
 
-// Delete an MCQ
 const deleteMCQ = async (req, res) => {
   try {
     const { id } = req.params;

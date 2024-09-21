@@ -12,7 +12,7 @@ const mcqRouter = Router();
 
 // MCQ routes
 mcqRouter.route("/mcqs").post(verifyJWT, isAdmin, createMCQ);
-mcqRouter.route("/mcqs").get(verifyJWT, isAdmin, getAllMCQs);
+mcqRouter.route("/mcqs").get(verifyJWT, getAllMCQs);
 mcqRouter.route("/mcqs/:id").put(verifyJWT, isAdmin, updateMCQ);
 mcqRouter.route("/mcqs/:id").delete(verifyJWT, isAdmin, deleteMCQ);
 
