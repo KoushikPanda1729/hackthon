@@ -1,5 +1,5 @@
-import ApiError from './../utils/ApiErrors.util.js';
-import asyncHandler from './../utils/asyncHandler.util.jsF';
+import ApiError from "./../utils/ApiErrors.util.js";
+import asyncHandler from "./../utils/asyncHandler.util.js";
 
 const isAdmin = asyncHandler(async (req, res, next) => {
   if (req.user?.role !== "admin") {
