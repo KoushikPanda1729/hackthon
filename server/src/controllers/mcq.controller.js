@@ -47,11 +47,20 @@ const getAllMCQs = async (req, res) => {
     const query = category ? { category } : {};
 
     const mcqs = await MCQ.find(query);
-    res.status(200).json(mcqs);
+
+    const totalQuestions = mcqs.length;
+    const totalMarks = totalQuestions;
+
+    return res.status(200).json({
+      totalQuestions,
+      totalMarks,
+      mcqs,
+    });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error fetching MCQs", error: error.message });
+    return res.status(500).json({
+      message: "Error fetching MCQs",
+      error: error.message,
+    });
   }
 };
 
@@ -114,4 +123,42 @@ const deleteMCQ = async (req, res) => {
   }
 };
 
-export { createMCQ, getAllMCQs, updateMCQ, deleteMCQ };
+const getObtainedMarks = async (req, res) => {
+  try {
+    const { answers } = req.body;
+    let obtainedMarks = 0;
+
+    for (const answer of answers) {
+      const { questionId, answerId } = answer;
+
+      // Find the MCQ in the database
+      const mcq = await MCQ.findById(questionId);
+
+      if (!mcq) {
+        return res
+          .status(404)
+          .json(new ApiError(404, `MCQ not found for ID: ${questionId}`));
+      }
+
+      // Find the correct answer from the database
+      const correctAnswer = mcq.answers.find((ans) => ans.isCorrect === true);
+
+      // Compare the user's answer with the correct answer
+      if (correctAnswer && correctAnswer._id === answerId) {
+        obtainedMarks += 1; // Increase marks for each correct answer
+      }
+    }
+
+    return res
+      .status(200)
+      .json(
+        new ApiResponces(200, { obtainedMarks }, "Marks obtained successfully")
+      );
+  } catch (error) {
+    return res
+      .status(500)
+      .json(new ApiError(500, "Error calculating marks", error.message));
+  }
+};
+
+export { createMCQ, getAllMCQs, updateMCQ, deleteMCQ, getObtainedMarks };

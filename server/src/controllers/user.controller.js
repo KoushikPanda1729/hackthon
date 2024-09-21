@@ -4,7 +4,7 @@ import ApiResponces from "./../utils/ApiResponces.util.js";
 import ApiError from "./../utils/ApiErrors.util.js";
 import jwt from "jsonwebtoken";
 
-export const generateAccessTokenAndRefreshToken = async (userId) => {
+const generateAccessTokenAndRefreshToken = async (userId) => {
   try {
     const user = await User.findById(userId);
 
@@ -251,4 +251,10 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     );
 });
 
-export { signUpUser, logInUser, userLoggOut, refreshAccessToken };
+export {
+  signUpUser,
+  logInUser,
+  userLoggOut,
+  refreshAccessToken,
+  generateAccessTokenAndRefreshToken,
+};
