@@ -64,7 +64,8 @@ export const signUp = async (
 };
 
 // Function to log out the user
-export const logout = () => {
+export const logout = async () => {
+  await axios.post("/api/v1/users/logout");
   localStorage.removeItem("user");
   localStorage.removeItem("accessToken");
   localStorage.removeItem("refreshToken");
