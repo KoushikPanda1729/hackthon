@@ -1,17 +1,10 @@
 import { FC, useEffect, useState } from "react";
 import { Button, CircularProgress } from "@mui/material";
 import styles from "./QuizPage.module.scss";
-import QuizQuestion, { QuizData } from "../../../components/QuizQuestion/QuizQuestion";
+import QuizQuestion from "../../../components/QuizQuestion/QuizQuestion";
 import { fetchAllMcqs } from "../../../services/api/questionService";
 import Header from "../../../components/Header/Header";
-
-interface Answer {
-  text: string;
-  isCorrect: boolean;
-  _id: string;
-}
-
-
+import { QuizData } from "../../../interfaces/QuizData";
 
 const QuizPage: FC = () => {
   const [quizData, setQuizData] = useState<QuizData[]>([]);

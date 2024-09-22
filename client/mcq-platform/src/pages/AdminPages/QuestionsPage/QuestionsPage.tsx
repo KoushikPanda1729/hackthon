@@ -1,10 +1,10 @@
 import { FC, useState, useEffect } from "react";
 import { Button, CircularProgress } from "@mui/material";
 import QuestionListItem from "../../../components/QuestionListItem/QuestionListItem";
-import { QuizData } from "../../../components/QuizQuestion/QuizQuestion";
 import { fetchAllMcqs, deleteMCQ } from "../../../services/api/questionService";
 import styles from "./QuestionsPage.module.scss";
 import CreateQuestionModal from "../../../components/CreateQuestionModal/CreateQuestionModal";
+import { QuizData } from "../../../interfaces/QuizData";
 
 const QuestionsPage: FC = () => {
   const [quizData, setQuizData] = useState<QuizData[]>([]);

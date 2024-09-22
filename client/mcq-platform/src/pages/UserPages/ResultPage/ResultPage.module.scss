@@ -1,1 +1,20 @@
-.ResultPage {}
+.ResultPage {
+    color: white;
+
+    .card{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 6rem 4rem;
+        border-radius: 0.5rem;
+        background-color: var(--color-primary);
+        gap: 2rem;
+    }
+
+    h1,h2,h3,h4,h5,h6{
+        margin: 0;
+        padding: 0;
+    }
+
+}

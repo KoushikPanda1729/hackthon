@@ -6,25 +6,45 @@
   max-width: 960px;
 
   .Item {
-    background-color: var(--color-secondary);
+    background-color: white;
     color: var(--color-primary);
-    padding: 20px;
-    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    flex: 1;
+    // flex: 1;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h4 {
+      width: 60%; /* Control the width */
+      overflow: hidden; /* Hide any overflowing text */
+      white-space: nowrap; /* Prevent text from wrapping to the next line */
+      text-overflow: ellipsis; /* Show ellipsis when the text overflows */
+    }
+
+    .category {
+      font-size: 10px;
+      font-weight: bold;
+      background-color: var(--color-accent);
+      color: white;
+      padding: 2px 4px;
+      border-radius: 2px;
+    }
   }
 
   .editButton {
-    background-color: var(--color-primary) !important;
-    color: #fff !important;
-    border-radius: 6px !important;
+    background-color: var(--color-secondary) !important;
+    color: var(--color-primary) !important;
+    border-radius: 4px !important;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
   }
 
   .deleteButton {
     background-color: rgb(182, 0, 0) !important;
     color: #fff !important;
-    border-radius: 6px !important;
+    border-radius: 4px !important;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
   }
 }

@@ -3,9 +3,10 @@ import styles from "./AdminPage.module.scss";
 import { Box, Button, CircularProgress, Tab, Tabs } from "@mui/material";
 import Header from "../../../components/Header/Header";
 import QuestionListItem from "../../../components/QuestionListItem/QuestionListItem";
-import { QuizData } from "../../../components/QuizQuestion/QuizQuestion";
+// import { QuizData } from "../../../components/QuizQuestion/QuizQuestion";
 import { fetchAllMcqs } from "../../../services/api/questionService";
 import { Outlet, useNavigate } from "react-router-dom";
+import { QuizData } from "../../../interfaces/QuizData";
 
 interface AdminPageProps {}
 

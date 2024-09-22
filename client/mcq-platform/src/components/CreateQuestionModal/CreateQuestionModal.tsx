@@ -14,8 +14,9 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
-import { CategoryEnum, QuizData } from "../QuizQuestion/QuizQuestion";
 import { createMCQ, editMCQ } from "../../services/api/questionService";
+import { CategoryEnum } from "../../enums/categoryEnum";
+import { QuizData } from "../../interfaces/QuizData";
 
 interface CreateQuestionModalProps {
   open: boolean;

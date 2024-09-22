@@ -1,7 +1,7 @@
-import React, { FC } from "react";
+import  { FC } from "react";
 import styles from "./QuestionListItem.module.scss";
-import { QuizData } from "../QuizQuestion/QuizQuestion";
 import { Button } from "@mui/material";
+import { QuizData } from "../../interfaces/QuizData";
 
 interface QuestionListItemProps {
   quizData: QuizData;
@@ -18,6 +18,8 @@ const QuestionListItem: FC<QuestionListItemProps> = ({
     <div className={styles.QuestionListItem}>
       <div className={styles.Item}>
         <h4>{quizData.question}</h4>
+
+        <div className={styles.category}>{quizData.category}</div>
       </div>
       <Button
         variant="contained"

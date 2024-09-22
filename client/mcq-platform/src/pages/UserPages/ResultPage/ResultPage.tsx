@@ -1,16 +1,23 @@
 import { FC } from "react";
 import styles from "./ResultPage.module.scss";
-import { Typography } from "@mui/material";
+import { ResultReport } from "../../../interfaces/ResultReport";
 
-interface ResultPageProps {}
+interface ResultPageProps {
+  resultReport: ResultReport;
+}
 
-const ResultPage: FC<ResultPageProps> = () => (
+const ResultPage: FC<ResultPageProps> = ({ resultReport }) => (
   <div className={styles.ResultPage}>
-    <h4>Quiz Completed!</h4>
-
-    <h6>
-      Thank you for completing the quiz. Your responses have been submitted.
-    </h6>
+    <div className={styles.card}>
+      <h2>Quiz Completed!</h2>
+      <h4>
+        Thank you for completing the quiz. Your responses have been submitted.
+      </h4>
+      <h1>
+        Total marks obtained {resultReport.obtainedMarks} out of{" "}
+        {resultReport.totalMarks}
+      </h1>
+    </div>
   </div>
 );
 

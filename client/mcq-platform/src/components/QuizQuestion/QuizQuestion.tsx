@@ -12,27 +12,8 @@ import styles from "./QuizQuestion.module.scss";
 import { submitQuiz } from "../../services/api/questionService";
 import ResultPage from "../../pages/UserPages/ResultPage/ResultPage";
 import { QuizResult } from "../../interfaces/QuizResult";
-
-export interface Answer {
-  text: string;
-  isCorrect: boolean;
-  _id: string;
-}
-
-export enum CategoryEnum {
-  Coding = "coding",
-  Database = "database",
-  Algorithms = "algorithms",
-  DataStructures = "data-structures",
-  General = "general",
-}
-
-export interface QuizData {
-  _id: string;
-  question: string;
-  answers: Answer[];
-  category: CategoryEnum;
-}
+import { QuizData } from "../../interfaces/QuizData";
+import { ResultReport } from "../../interfaces/ResultReport";
 
 interface QuizQuestionProps {
   quizData: QuizData[];
@@ -43,38 +24,41 @@ const QuizQuestion: FC<QuizQuestionProps> = ({ quizData }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [answers, setAnswers] = useState<QuizResult[]>([]);
   const [isQuizComplete, setIsQuizComplete] = useState(false); // Track if the quiz is completed
+  const [resultReport, setResultReport] = useState<ResultReport | null>(null); // Track the result report
 
   const questionTime = 10;
   const [timeLeft, setTimeLeft] = useState(questionTime); // questionTime seconds for each question
 
   // Timer logic
   useEffect(() => {
-    if (timeLeft === 0) {
-      handleNextQuestion();
+    if (timeLeft === 0 && !isQuizComplete) {
+      handleNextQuestion(); // Automatically move to next question when time is up
     }
 
     const timer = setInterval(() => {
       setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
     }, 1000);
 
+    isQuizComplete && clearInterval(timer); // Clear the interval when the quiz is complete
+
     return () => clearInterval(timer); // Clear the interval when the component unmounts or the question changes
   }, [timeLeft]);
 
   // Reset timer and selected answer when moving to a new question
   useEffect(() => {
-    if (currentQuestion < quizData.length) {
+    if (currentQuestion < quizData.length && !isQuizComplete) {
       setTimeLeft(questionTime);
       setSelectedAnswer(null); // Clear the selected answer for the new question
     }
-  }, [currentQuestion]);
+  }, [currentQuestion, isQuizComplete]);
 
   const handleAnswerChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedAnswer(event.target.value);
   };
 
-  const handleNextQuestion = () => {
+  const handleNextQuestion = async () => {
     // Include the current question and selected answer in the answers array
-    const updatedAnswers = [
+    const updatedAnswers: QuizResult[] = [
       ...answers,
       {
         questionId: quizData[currentQuestion]._id,
@@ -90,15 +74,17 @@ const QuizQuestion: FC<QuizQuestionProps> = ({ quizData }) => {
       // Move to the next question
       setCurrentQuestion(currentQuestion + 1);
     } else {
-      // Submit the quiz after updating the answers array
+      // End the quiz and submit answers
       setIsQuizComplete(true);
-      submitQuiz(updatedAnswers); // Submit the updated answers array
-      console.log("Quiz submitted", updatedAnswers);
+      const marksData = await submitQuiz(updatedAnswers);
+      setResultReport(marksData.data); // Submit the updated answers array
+      console.log("Quiz submitted", marksData);
     }
   };
 
-  if (isQuizComplete) {
-    return <ResultPage />;
+  // Return ResultPage after quiz completion
+  if (isQuizComplete && resultReport) {
+    return <ResultPage resultReport={resultReport} />;
   }
 
   const timeLeftPercentage = (timeLeft / questionTime) * 100;
