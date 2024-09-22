@@ -107,13 +107,31 @@ const QuestionsPage: FC = () => {
         </Button>
 
         <FormControl variant="outlined" className={styles.filterControl}>
-          <InputLabel id="category-filter-label"> Category</InputLabel>
+          <InputLabel
+            id="category-filter-label"
+            sx={{ color: "#e2dfd0", fontWeight: 400 }}
+          >
+            {" "}
+            Category
+          </InputLabel>
           <Select
             labelId="category-filter-label"
             id="category-filter"
             value={selectedCategory}
             onChange={handleCategoryChange}
             label="Filter by Category"
+            sx={{
+              color: "#333", // Optional: customize text color
+              ".MuiOutlinedInput-notchedOutline": {
+                borderColor: "#aaa", // Optional: customize border color
+              },
+              "&:hover .MuiOutlinedInput-notchedOutline": {
+                borderColor: "#777", // Change border color on hover
+              },
+              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                borderColor: "#1976d2", // Change border color when focused
+              },
+            }}
           >
             <MenuItem value="">
               <em>All Categories</em>
@@ -121,7 +139,6 @@ const QuestionsPage: FC = () => {
             {Object.values(CategoryEnum).map((category) => (
               <MenuItem key={category} value={category}>
                 {category.charAt(0).toUpperCase() + category.slice(1)}{" "}
-                {/* Capitalize the category */}
               </MenuItem>
             ))}
           </Select>
