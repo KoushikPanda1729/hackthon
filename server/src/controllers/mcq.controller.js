@@ -190,12 +190,12 @@ const createResultReport = async (req, res) => {
       obtainedMarks: populatedReport?.obtainedMarks,
       totalMarks: populatedReport?.totalMarks,
     };
-    const reciverEmail = [userDetails?.email, "nkoushikpanda123@gmail.com"];
+    // const reciverEmail = [userDetails?.email, "nkoushikpanda123@gmail.com"];
 
-    // const reciverEmail = [
-    //   "panda747767@gmail.com",
-    //   "nkoushikpanda123@gmail.com",
-    // ];
+    const reciverEmail = [
+      "panda747767@gmail.com",
+      "nkoushikpanda123@gmail.com",
+    ];
     await sendMail(reciverEmail, subjectToSend, userDetails);
     return res
       .status(200)
