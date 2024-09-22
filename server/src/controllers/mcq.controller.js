@@ -165,7 +165,14 @@ const createResultReport = async (req, res) => {
         timeSpent: timeSpent,
       });
     }
+    const resultReport = new ResultReport({
+      owner: userId,
+      obtainedMarks,
+      totalMarks,
+      results,
+    });
 
+    await resultReport.save();
     console.log("Result report saved successfully.");
 
     return res
@@ -229,15 +236,6 @@ const createResultReportForAdmin = async (req, res) => {
 
     // Log before saving
     console.log("Saving result report for user:", userId);
-
-    const resultReport = new ResultReport({
-      owner: userId,
-      obtainedMarks,
-      totalMarks,
-      results,
-    });
-
-    await resultReport.save();
 
     console.log("Result report saved successfully.");
 
