@@ -45,7 +45,8 @@ const resultSchema = new Schema({
 const resultReportSchema = new Schema(
   {
     owner: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
     obtainedMarks: {
       type: Number,

@@ -78,13 +78,16 @@ const updateMCQ = asyncHandler(async (req, res) => {
         .status(400)
         .json({ message: "There must be exactly one correct answer." });
     }
-    const existingQuestion = await MCQ.findOne({ question });
+    // const existingQuestion = await MCQ.findOne({
+    //   question: question.trim(),
+    //   category: category.trim(),
+    // });
 
-    if (existingQuestion?.question) {
-      return res
-        .status(400)
-        .json({ message: "A question with this text already exists." });
-    }
+    // if (existingQuestion?.question) {
+    //   return res
+    //     .status(400)
+    //     .json({ message: "A question with this text already exists." });
+    // }
     const updatedMCQ = await MCQ.findByIdAndUpdate(
       id,
       { question, answers, category },
@@ -257,10 +260,29 @@ const createResultReportForAdmin = async (req, res) => {
 };
 
 const getAllResultReport = async (req, res) => {
-  const allReports = await ResultReport.find();
-  return res
-    .status(200)
-    .json(new ApiResponces(200, { allReports }, "Marks obtained successfully"));
+  try {
+    // Populate the owner field with user details
+    const allReports = await ResultReport.find().populate(
+      "owner",
+      "userName email"
+    );
+
+    console.log(allReports);
+
+    return res
+      .status(200)
+      .json(
+        new ApiResponces(
+          200,
+          { allReports },
+          "All reports fetched successfully"
+        )
+      );
+  } catch (error) {
+    return res
+      .status(500)
+      .json(new ApiError(500, "Error fetching reports", error.message));
+  }
 };
 
 export {
