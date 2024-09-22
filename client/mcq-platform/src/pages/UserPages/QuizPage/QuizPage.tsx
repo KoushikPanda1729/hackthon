@@ -7,8 +7,8 @@ import Header from "../../../components/Header/Header";
 import { QuizData } from "../../../interfaces/QuizData";
 import useDisableCopyPaste from "../../../hooks/useDisableCopyPaste";
 import usePreventInspectElement from "../../../hooks/usePreventInspectElement";
-import useFullScreenMode from "../../../hooks/useFullScreenMode";
 import { shuffleQuizData } from "../../../utils/shuffleQuizData";
+import useFullScreenMode from "../../../hooks/useFullScreenMode";
 
 const QuizPage: FC = () => {
   const [quizData, setQuizData] = useState<QuizData[]>([]);
@@ -18,7 +18,7 @@ const QuizPage: FC = () => {
 
   useDisableCopyPaste();
   usePreventInspectElement();
-  const { enterFullScreen } = useFullScreenMode();
+  const { enterFullScreen, exitFullScreen } = useFullScreenMode();
 
   // Fetch quiz data from the backend when the component mounts
   useEffect(() => {
@@ -40,7 +40,11 @@ const QuizPage: FC = () => {
 
   const startQuiz = () => {
     setIsQuizStarted(true);
-    enterFullScreen();
+    enterFullScreen(); // Enable full-screen mode
+  };
+
+  const handleQuizCompletion = () => {
+    exitFullScreen(); // Exit full-screen mode when quiz is completed
   };
 
   // Render the loading spinner while data is being fetched
@@ -74,7 +78,10 @@ const QuizPage: FC = () => {
           </Button>
         </div>
       ) : (
-        <QuizQuestion quizData={quizData} />
+        <QuizQuestion
+          quizData={quizData}
+          onQuizComplete={handleQuizCompletion}
+        />
       )}
     </div>
   );

@@ -11,9 +11,17 @@ const useFullScreenMode = () => {
     }
   };
 
+  const exitFullScreen = () => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch((err) => {
+        console.error("Failed to exit full-screen mode:", err.message);
+      });
+    }
+  };
+
   const detectFullScreenExit = () => {
     if (!document.fullscreenElement) {
-      alert("You have exited full-screen mode. Please return to full-screen.");
+      // alert("You have exited full-screen mode. Please return to full-screen.");
       enterFullScreen(); // Prompt user to re-enter full-screen mode
     }
   };
@@ -28,7 +36,7 @@ const useFullScreenMode = () => {
     };
   }, []);
 
-  return { enterFullScreen };
+  return { enterFullScreen, exitFullScreen };
 };
 
 export default useFullScreenMode;

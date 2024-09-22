@@ -1,5 +1,6 @@
 import { FC, useState, useEffect } from "react";
 import {
+  Alert,
   Button,
   CircularProgress,
   FormControl,
@@ -7,6 +8,7 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
+  Snackbar,
 } from "@mui/material";
 import QuestionListItem from "../../../components/QuestionListItem/QuestionListItem";
 import { fetchAllMcqs, deleteMCQ } from "../../../services/api/questionService";
@@ -23,6 +25,12 @@ const QuestionsPage: FC = () => {
   const [openModal, setOpenModal] = useState(false);
   const [editData, setEditData] = useState<QuizData | null>(null); // Track which question is being edited
   const [selectedCategory, setSelectedCategory] = useState<string>("");
+
+  const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false);
+  const [snackbarMessage, setSnackbarMessage] = useState<string>("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
+    "success"
+  );
 
   const fetchQuizData = async () => {
     try {
@@ -57,10 +65,18 @@ const QuestionsPage: FC = () => {
 
   const handleDelete = async (id: string) => {
     try {
-      await deleteMCQ(id); // API call to delete MCQ
+      const response = await deleteMCQ(id); // API call to delete MCQ
       fetchQuizData(); // Refresh the list after deletion
-    } catch (error) {
+      setSnackbarMessage(response.message);
+      setSnackbarSeverity("success"); // Set to error in case of failure
+      setSnackbarOpen(true);
+    } catch (error: any) {
       setError("Failed to delete the question. Please try again.");
+      setSnackbarMessage(
+        "Error: " + error.response?.data?.message || "Something went wrong."
+      );
+      setSnackbarSeverity("error"); // Set to error in case of failure
+      setSnackbarOpen(true);
     }
   };
 
@@ -75,6 +91,10 @@ const QuestionsPage: FC = () => {
         quizData.filter((quiz) => quiz.category === category)
       );
     }
+  };
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
   };
 
   if (isLoading) {
@@ -160,6 +180,21 @@ const QuestionsPage: FC = () => {
         handleClose={handleCloseModal}
         editData={editData} // Pass edit data if available
       />
+
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={4000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbarSeverity} // Dynamic severity: success or error
+          sx={{ width: "100%" }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

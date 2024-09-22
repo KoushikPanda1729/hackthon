@@ -1,1 +1,9 @@
-.CreateQuestionModal {}
+.submitButton {
+  color: var(--color-primary) !important;
+  background-color: var(--color-secondary) !important;
+
+  &:disabled {
+    color: #8964644c !important;
+    background-color: rgba(116, 78, 78, 0.251) !important;
+  }
+}

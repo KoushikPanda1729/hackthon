@@ -16,7 +16,7 @@ h2 {
 }
 
 .timer {
-  color: red; 
+  color: red;
   font-size: 1.2rem;
   margin-bottom: 20px;
 }
@@ -31,4 +31,15 @@ button {
   justify-content: flex-end;
   align-items: center;
   gap: 1rem;
+}
+.loading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+
+  h4 {
+    color: var(--color-primary);
+  }
 }
