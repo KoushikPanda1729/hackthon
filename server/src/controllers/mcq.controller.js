@@ -264,7 +264,7 @@ const getAllResultReport = async (req, res) => {
   try {
     // Populate the owner field with user details
     const allReports = await ResultReport.find().populate(
-      "candidate",
+      "owner",
       "userName email"
     );
 

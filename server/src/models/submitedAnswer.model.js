@@ -48,7 +48,7 @@ const resultSchema = new Schema({
 // Main schema to store the quiz report for a user
 const resultReportSchema = new Schema(
   {
-    candidate: {
+    owner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
