@@ -34,8 +34,9 @@ const sendMail = async (receiverEmails, subjectToSend, userDetails) => {
       Hello Admin,
 
       User ${userDetails.userName} (${userDetails.email}) has completed the test.
-      - Email: ${userDetails.email}
+      
       Here are the user's results:
+      - Email: ${userDetails.email}
       - Obtained Marks: ${userDetails.obtainedMarks}
       - Total Marks: ${userDetails.totalMarks}
 
