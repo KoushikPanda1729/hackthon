@@ -80,9 +80,9 @@ export const submitQuiz = async (quizResults: QuizResult[]) => {
 // Fetch all attempted quizzes (dummy API example)
 export const fetchAttemptedQuizzes = async () => {
   try {
-    // const response = await axios.get("/api/v1/");
-    // console.log("Fetched all MCQs:", response.data);
-    // return response.data.mcqs; // Return the data from the response
+    const response = await axios.get("/api/v1/questions/mcqs/all-result-admin");
+    console.log("Fetched all MCQs:", response.data);
+    return response.data.allReports; // Return the data from the response
     return [];
   } catch (error) {
     console.error("Error fetching MCQs:", error);
