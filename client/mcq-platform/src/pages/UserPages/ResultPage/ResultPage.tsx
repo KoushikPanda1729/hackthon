@@ -6,11 +6,11 @@ interface ResultPageProps {}
 
 const ResultPage: FC<ResultPageProps> = () => (
   <div className={styles.ResultPage}>
-    <Typography variant="h5">Quiz Completed!</Typography>
+    <h4>Quiz Completed!</h4>
 
-    <Typography variant="body1">
+    <h6>
       Thank you for completing the quiz. Your responses have been submitted.
-    </Typography>
+    </h6>
   </div>
 );
 

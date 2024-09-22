@@ -1,17 +1,20 @@
 import { FC, useEffect, useState } from "react";
 import styles from "./AdminPage.module.scss";
-import { Button, CircularProgress } from "@mui/material";
+import { Box, Button, CircularProgress, Tab, Tabs } from "@mui/material";
 import Header from "../../../components/Header/Header";
 import QuestionListItem from "../../../components/QuestionListItem/QuestionListItem";
 import { QuizData } from "../../../components/QuizQuestion/QuizQuestion";
 import { fetchAllMcqs } from "../../../services/api/questionService";
+import { Outlet, useNavigate } from "react-router-dom";
 
 interface AdminPageProps {}
 
 const AdminPage: FC<AdminPageProps> = () => {
+  const [tabIndex, setTabIndex] = useState(0);
   const [quizData, setQuizData] = useState<QuizData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchQuizData = async () => {
@@ -27,7 +30,21 @@ const AdminPage: FC<AdminPageProps> = () => {
     };
 
     fetchQuizData();
+    setTabIndex(0);
+    navigate("/admin/questions");
   }, []);
+
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    setTabIndex(newValue);
+
+    // Navigate to the correct tab route
+    if (newValue === 0) {
+      navigate("/admin/questions");
+    } else if (newValue === 1) {
+      navigate("/admin/attempted-quizzes");
+    }
+  };
+
   // Render the loading spinner while data is being fetched
   if (isLoading) {
     return (
@@ -49,26 +66,42 @@ const AdminPage: FC<AdminPageProps> = () => {
   return (
     <div className={styles.AdminPage}>
       <Header isAdminPage={true} />
-      <div className={styles.adminBox}>
+      {/* <div className={styles.adminBox}>
         <Button>Create New Question</Button>
-        {/* <form>
-        <div>
-          <label htmlFor="question">Question</label>
-          <input type="text" id="question" name="question" />
-        </div>
-        <div>
-          <label htmlFor="answers">Answers</label>
-          <input type="text" id="answers" name="answers" />
-        </div>
-        <div>
-          <label htmlFor="category">Category</label>
-          <input type="text" id="category" name="category" />
-        </div>
-        <button type="submit">Submit</button>
-      </form> */}
+
         {quizData.map((item) => (
           <QuestionListItem quizData={item} />
         ))}
+      </div> */}
+      <div className={styles.adminBox}>
+        <Tabs
+          value={tabIndex}
+          onChange={handleTabChange}
+          sx={{
+            "& .MuiTabs-indicator": {
+              backgroundColor: "#f97300 !important", // Custom color for the active tab indicator
+            },
+            "& .MuiTab-root": {
+              color: "#fff !important", // Default text color
+              fontWeight: "bold !important", // Bold font
+              backgroundColor: "#00000000 !important", // Background color
+              "&.Mui-selected": {
+                color: "#f97300 !important", // Color for selected tab
+              },
+              "&:hover": {
+                color: "#ff5722 !importants", // Hover effect
+              },
+            },
+          }}
+        >
+          <Tab label="Questions" />
+          <Tab label="Attempted Quizzes" />
+        </Tabs>
+
+        {/* This renders the child routes like QuestionsPage or AttemptedQuizzesPage */}
+        <Box className={styles.tabContent}>
+          <Outlet />
+        </Box>
       </div>
     </div>
   );

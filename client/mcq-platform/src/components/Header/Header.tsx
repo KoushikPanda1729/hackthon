@@ -17,23 +17,9 @@ const Header: FC<HeaderProps> = ({
   if (isAdminPage) {
     return (
       <header className={styles.Header}>
-        <h3 className={styles.logo}>HireLens </h3>
-        <h4>Admin DashBoard</h4>
-        <Button
-          variant="contained"
-          color="primary"
-          className={styles.logoutButton}
-          onClick={logout}
-        >
-          Log Out
-        </Button>
-      </header>
-    );
-  } else {
-    return (
-      <header className={styles.Header}>
-        <h3 className={styles.logo}>HireLens</h3>
-        {!isAuthPage && (
+        <div className={styles.headerWrap}>
+          <h3 className={styles.logo}>HireLens </h3>
+          <h4>Admin DashBoard</h4>
           <Button
             variant="contained"
             color="primary"
@@ -42,7 +28,25 @@ const Header: FC<HeaderProps> = ({
           >
             Log Out
           </Button>
-        )}
+        </div>
+      </header>
+    );
+  } else {
+    return (
+      <header className={styles.Header}>
+        <div className={styles.headerWrap}>
+          <h3 className={styles.logo}>HireLens</h3>
+          {!isAuthPage && (
+            <Button
+              variant="contained"
+              color="primary"
+              className={styles.logoutButton}
+              onClick={logout}
+            >
+              Log Out
+            </Button>
+          )}
+        </div>
       </header>
     );
   }

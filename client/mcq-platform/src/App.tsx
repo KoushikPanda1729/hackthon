@@ -11,6 +11,9 @@ import AdminPage from "./pages/AdminPages/AdminPage/AdminPage";
 import { AuthProvider } from "./contexts/AuthContext";
 import PublicRoute from "./components/PrivateRoute/PrivateRoute";
 
+import AttemptedQuizzesPage from "./pages/AdminPages/AttemptedQuizzesPage/AttemptedQuizzesPage.lazy";
+import QuestionsPage from "./pages/AdminPages/QuestionsPage/QuestionsPage.lazy";
+
 function App() {
   const routes = createBrowserRouter([
     {
@@ -38,7 +41,16 @@ function App() {
     {
       path: "/",
       element: <ProtectedRoute />, // Protect admin routes
-      children: [{ path: "admin", element: <AdminPage key="admin-page" /> }],
+      children: [
+        {
+          path: "admin",
+          element: <AdminPage key="admin-page" />,
+          children: [
+            { path: "questions", element: <QuestionsPage /> }, // Questions tab
+            { path: "attempted-quizzes", element: <AttemptedQuizzesPage /> }, // Attempted Quizzes tab
+          ],
+        },
+      ],
     },
 
     // Fallback: redirect to login if no match

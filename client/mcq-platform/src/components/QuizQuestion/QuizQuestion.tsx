@@ -9,8 +9,9 @@ import {
   Typography,
 } from "@mui/material";
 import styles from "./QuizQuestion.module.scss";
-import { QuizResult, submitQuiz } from "../../services/api/questionService";
+import { submitQuiz } from "../../services/api/questionService";
 import ResultPage from "../../pages/UserPages/ResultPage/ResultPage";
+import { QuizResult } from "../../interfaces/QuizResult";
 
 export interface Answer {
   text: string;
@@ -18,10 +19,19 @@ export interface Answer {
   _id: string;
 }
 
+export enum CategoryEnum {
+  Coding = "coding",
+  Database = "database",
+  Algorithms = "algorithms",
+  DataStructures = "data-structures",
+  General = "general",
+}
+
 export interface QuizData {
   _id: string;
   question: string;
   answers: Answer[];
+  category: CategoryEnum;
 }
 
 interface QuizQuestionProps {

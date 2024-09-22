@@ -1,1 +1,30 @@
-.QuestionListItem {}
+.QuestionListItem {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  max-width: 960px;
+
+  .Item {
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    flex: 1;
+  }
+
+  .editButton {
+    background-color: var(--color-primary) !important;
+    color: #fff !important;
+    border-radius: 6px !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  .deleteButton {
+    background-color: rgb(182, 0, 0) !important;
+    color: #fff !important;
+    border-radius: 6px !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+  }
+}

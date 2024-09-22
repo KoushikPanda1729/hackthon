@@ -1,0 +1,25 @@
+.QuestionsPage {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.error {
+  color: red;
+  text-align: center;
+}
+
+.createButton {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  min-width: 14rem !important;
+  max-width: 16rem !important;
+}

@@ -1,0 +1,17 @@
+.AttemptedQuizzesPage {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.error {
+  color: red;
+  text-align: center;
+}
