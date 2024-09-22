@@ -35,6 +35,10 @@ const resultSchema = new Schema({
     type: answerSchema, // Correct answer schema
     required: true,
   },
+  timeSpent: {
+    type: Number,
+    required: true,
+  },
   isCorrect: {
     type: Boolean,
     required: true,
@@ -44,7 +48,7 @@ const resultSchema = new Schema({
 // Main schema to store the quiz report for a user
 const resultReportSchema = new Schema(
   {
-    owner: {
+    candidate: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },

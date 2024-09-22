@@ -212,6 +212,7 @@ const createResultReportForAdmin = async (req, res) => {
       const { questionId, answerId, timeSpent } = answer;
 
       const mcq = await MCQ.findById(questionId);
+      
       if (!mcq) {
         return res
           .status(404)
@@ -263,7 +264,7 @@ const getAllResultReport = async (req, res) => {
   try {
     // Populate the owner field with user details
     const allReports = await ResultReport.find().populate(
-      "owner",
+      "candidate",
       "userName email"
     );
 
