@@ -1,4 +1,5 @@
 import { MCQ } from "../models/mcq.model.js";
+import ResultReport from "../models/submitedAnswer.model.js";
 import ApiError from "../utils/ApiErrors.util.js";
 import asyncHandler from "../utils/asyncHandler.util.js";
 import ApiResponces from "./../utils/ApiResponces.util.js";
@@ -125,17 +126,21 @@ const deleteMCQ = asyncHandler(async (req, res) => {
 
 const createResultReport = async (req, res) => {
   try {
-    const answers = req.body; // The array of user answers
+    console.log("Creating result report for user:", req?.user?._id);
+
+    const userId = req?.user?._id;
+    const answers = req.body;
     let obtainedMarks = 0;
     const totalMarks = answers.length;
     const results = [];
 
+    // Log user answers
+    console.log("User answers:", answers);
+
     for (const answer of answers) {
       const { questionId, answerId, timeSpent } = answer;
 
-      // Find the MCQ in the database
       const mcq = await MCQ.findById(questionId);
-
       if (!mcq) {
         return res
           .status(404)
@@ -149,40 +154,123 @@ const createResultReport = async (req, res) => {
 
       const isCorrect =
         correctAnswer && correctAnswer._id.toString() === answerId;
+      if (isCorrect) obtainedMarks += 1;
 
-      // Add to the total marks if the answer is correct
-      if (isCorrect) {
-        obtainedMarks += 1;
-      }
-
-      // Add this question's result to the results array
       results.push({
         questionId: mcq._id,
         question: mcq.question,
-        userAnswerText: userAnswer ? userAnswer : null, // Text of the user's selected answer
-        correctAnswerText: correctAnswer ? correctAnswer : null, // Text of the correct answer
+        userAnswerText: userAnswer ? userAnswer : null,
+        correctAnswerText: correctAnswer ? correctAnswer : null,
         isCorrect: isCorrect,
-        timeSpent: timeSpent, // Time spent on this question
+        timeSpent: timeSpent,
       });
     }
 
-    // Return the final report
-    return res.status(200).json(
-      new ApiResponces(
-        200,
-        {
-          obtainedMarks,
-          totalMarks,
-          results, // List of question results
-        },
-        "Marks obtained successfully"
-      )
-    );
+    console.log("Result report saved successfully.");
+
+    return res
+      .status(200)
+      .json(
+        new ApiResponces(
+          200,
+          { obtainedMarks, totalMarks, results },
+          "Marks obtained successfully"
+        )
+      );
   } catch (error) {
+    console.log("Error while creating result report:", error);
     return res
       .status(500)
       .json(new ApiError(500, "Error calculating marks", error.message));
   }
 };
 
-export { createMCQ, getAllMCQs, updateMCQ, deleteMCQ, createResultReport };
+const createResultReportForAdmin = async (req, res) => {
+  try {
+    console.log("Creating result report for user:", req?.user?._id);
+
+    const userId = req?.user?._id;
+    const answers = req.body;
+    let obtainedMarks = 0;
+    const totalMarks = answers.length;
+    const results = [];
+
+    // Log user answers
+    console.log("User answers:", answers);
+
+    for (const answer of answers) {
+      const { questionId, answerId, timeSpent } = answer;
+
+      const mcq = await MCQ.findById(questionId);
+      if (!mcq) {
+        return res
+          .status(404)
+          .json(new ApiError(404, `MCQ not found for ID: ${questionId}`));
+      }
+
+      const correctAnswer = mcq.answers.find((ans) => ans.isCorrect === true);
+      const userAnswer = mcq.answers.find(
+        (ans) => ans._id.toString() === answerId
+      );
+
+      const isCorrect =
+        correctAnswer && correctAnswer._id.toString() === answerId;
+      if (isCorrect) obtainedMarks += 1;
+
+      results.push({
+        questionId: mcq._id,
+        question: mcq.question,
+        userAnswerText: userAnswer ? userAnswer : null,
+        correctAnswerText: correctAnswer ? correctAnswer : null,
+        isCorrect: isCorrect,
+        timeSpent: timeSpent,
+      });
+    }
+
+    // Log before saving
+    console.log("Saving result report for user:", userId);
+
+    const resultReport = new ResultReport({
+      owner: userId,
+      obtainedMarks,
+      totalMarks,
+      results,
+    });
+
+    await resultReport.save();
+
+    console.log("Result report saved successfully.");
+
+    return res
+      .status(200)
+      .json(
+        new ApiResponces(
+          200,
+          { obtainedMarks, totalMarks, results },
+          "Marks obtained successfully"
+        )
+      );
+  } catch (error) {
+    console.log("Error while creating result report:", error);
+    return res
+      .status(500)
+      .json(new ApiError(500, "Error calculating marks", error.message));
+  }
+};
+
+const getAllResultReport = async (req, res) => {
+  const allReports = await ResultReport.find();
+  return res
+    .status(200)
+    .json(new ApiResponces(200, { allReports }, "Marks obtained successfully"));
+};
+
+export {
+  createMCQ,
+  getAllMCQs,
+  updateMCQ,
+  deleteMCQ,
+  createResultReport,
+  createResultReportForAdmin,
+  getAllResultReport,
+};
