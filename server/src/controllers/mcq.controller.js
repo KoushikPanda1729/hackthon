@@ -186,7 +186,7 @@ const createResultReport = async (req, res) => {
 
     const userDetails = {
       userName: populatedReport?.owner?.userName,
-      email: populatedReport?.owner?.userName,
+      email: populatedReport?.owner?.email,
       obtainedMarks: populatedReport?.obtainedMarks,
       totalMarks: populatedReport?.totalMarks,
     };
