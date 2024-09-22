@@ -2,6 +2,7 @@ import { MCQ } from "../models/mcq.model.js";
 import ResultReport from "../models/submitedAnswer.model.js";
 import ApiError from "../utils/ApiErrors.util.js";
 import asyncHandler from "../utils/asyncHandler.util.js";
+import sendMail from "../utils/sendEmail.util.js";
 import ApiResponces from "./../utils/ApiResponces.util.js";
 
 const createMCQ = asyncHandler(async (req, res) => {
@@ -176,8 +177,26 @@ const createResultReport = async (req, res) => {
     });
 
     await resultReport.save();
+    const populatedReport = await ResultReport.findById(resultReport._id)
+      .populate("owner")
+      .select("-password");
     console.log("Result report saved successfully.");
 
+    const subjectToSend = "MCQ Test Answer Submitted | Today";
+
+    const userDetails = {
+      userName: populatedReport?.owner?.userName,
+      email: populatedReport?.owner?.userName,
+      obtainedMarks: populatedReport?.obtainedMarks,
+      totalMarks: populatedReport?.totalMarks,
+    };
+    // const reciverEmail = [userDetails?.email, "nkoushikpanda123@gmail.com"];
+
+    const reciverEmail = [
+      "panda747767@gmail.com",
+      "nkoushikpanda123@gmail.com",
+    ];
+    await sendMail(reciverEmail, subjectToSend, userDetails);
     return res
       .status(200)
       .json(
@@ -212,7 +231,7 @@ const createResultReportForAdmin = async (req, res) => {
       const { questionId, answerId, timeSpent } = answer;
 
       const mcq = await MCQ.findById(questionId);
-      
+
       if (!mcq) {
         return res
           .status(404)
