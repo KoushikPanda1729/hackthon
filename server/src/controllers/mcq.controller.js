@@ -71,6 +71,7 @@ const updateMCQ = asyncHandler(async (req, res) => {
     const { id } = req.params;
     const { question, answers, category } = req.body;
 
+    // Ensure exactly one correct answer
     const correctAnswersCount = answers.filter(
       (answer) => answer.isCorrect
     ).length;
@@ -79,16 +80,20 @@ const updateMCQ = asyncHandler(async (req, res) => {
         .status(400)
         .json({ message: "There must be exactly one correct answer." });
     }
-    // const existingQuestion = await MCQ.findOne({
-    //   question: question.trim(),
-    //   category: category.trim(),
-    // });
 
-    // if (existingQuestion?.question) {
-    //   return res
-    //     .status(400)
-    //     .json({ message: "A question with this text already exists." });
-    // }
+    // Check if a question with the same text exists (excluding the current MCQ), regardless of category
+    const existingQuestion = await MCQ.findOne({
+      question: question.trim(),
+      _id: { $ne: id }, // Exclude the current MCQ being updated
+    });
+
+    if (existingQuestion) {
+      return res.status(400).json({
+        message: "A question with this text already exists.",
+      });
+    }
+
+    // Perform the update if no duplicate question exists
     const updatedMCQ = await MCQ.findByIdAndUpdate(
       id,
       { question, answers, category },
