@@ -2,6 +2,7 @@ import { FC, useContext } from "react";
 import styles from "./Header.module.scss";
 import { Button, Typography } from "@mui/material";
 import { AuthContext } from "../../contexts/AuthContext";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 interface HeaderProps {
   isAuthPage?: boolean;
@@ -25,6 +26,7 @@ const Header: FC<HeaderProps> = ({
             color="primary"
             className={styles.logoutButton}
             onClick={logout}
+            startIcon={<LogoutIcon />}
           >
             Log Out
           </Button>

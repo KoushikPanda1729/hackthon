@@ -5,6 +5,10 @@ import QuizQuestion from "../../../components/QuizQuestion/QuizQuestion";
 import { fetchAllMcqs } from "../../../services/api/questionService";
 import Header from "../../../components/Header/Header";
 import { QuizData } from "../../../interfaces/QuizData";
+import useDisableCopyPaste from "../../../hooks/useDisableCopyPaste";
+import usePreventInspectElement from "../../../hooks/usePreventInspectElement";
+import useFullScreenMode from "../../../hooks/useFullScreenMode";
+import { shuffleQuizData } from "../../../utils/shuffleQuizData";
 
 const QuizPage: FC = () => {
   const [quizData, setQuizData] = useState<QuizData[]>([]);
@@ -12,13 +16,18 @@ const QuizPage: FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isQuizStarted, setIsQuizStarted] = useState(false);
 
+  // useDisableCopyPaste();
+  // usePreventInspectElement();
+  // useFullScreenMode();
+
   // Fetch quiz data from the backend when the component mounts
   useEffect(() => {
     const fetchQuizData = async () => {
       try {
         const response = await fetchAllMcqs();
         console.log("Fetched quiz data:", response);
-        setQuizData(response); // Assuming the API response is the array of questions
+        const shuffledQuizData = shuffleQuizData(response);
+        setQuizData(shuffledQuizData); // Assuming the API response is the array of questions
         setIsLoading(false);
       } catch (error) {
         setError("Failed to load quiz data. Please try again.");
@@ -57,7 +66,7 @@ const QuizPage: FC = () => {
 
       {!isQuizStarted ? (
         <div className={styles.startQuiz}>
-          <h1 className={styles.welcomeText}>Welcome to the Quiz</h1>
+          <h1 className={styles.welcomeText}>Welcome to HireLens</h1>
           <Button variant="contained" color="primary" onClick={startQuiz}>
             Start Quiz
           </Button>

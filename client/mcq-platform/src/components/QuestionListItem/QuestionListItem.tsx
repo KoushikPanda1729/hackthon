@@ -1,7 +1,9 @@
-import  { FC } from "react";
+import { FC } from "react";
 import styles from "./QuestionListItem.module.scss";
 import { Button } from "@mui/material";
 import { QuizData } from "../../interfaces/QuizData";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 interface QuestionListItemProps {
   quizData: QuizData;
@@ -26,6 +28,7 @@ const QuestionListItem: FC<QuestionListItemProps> = ({
         color="primary"
         className={styles.editButton}
         onClick={onEdit}
+        startIcon={<EditIcon />}
       >
         Edit
       </Button>
@@ -34,6 +37,7 @@ const QuestionListItem: FC<QuestionListItemProps> = ({
         color="secondary"
         className={styles.deleteButton}
         onClick={onDelete} // Handle delete action
+        startIcon={<DeleteIcon />}
       >
         Delete
       </Button>

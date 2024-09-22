@@ -1,6 +1,6 @@
-.QuestionListItem {
+.AttemptedQuizListItem {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   gap: 1rem;
   max-width: 960px;
@@ -13,7 +13,6 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     // flex: 1;
     width: 100%;
-    max-width: 720px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -24,20 +23,11 @@
       white-space: nowrap; /* Prevent text from wrapping to the next line */
       text-overflow: ellipsis; /* Show ellipsis when the text overflows */
     }
-
-    .category {
-      font-size: 10px;
-      font-weight: bold;
-      background-color: var(--color-accent);
-      color: white;
-      padding: 2px 4px;
-      border-radius: 2px;
-    }
   }
 
-  .editButton {
-    background-color: var(--color-secondary) !important;
-    color: var(--color-primary) !important;
+  .viewButton {
+    background-color: var(--color-accent) !important;
+    color: white !important;
     border-radius: 4px !important;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
   }
