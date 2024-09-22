@@ -24,3 +24,10 @@
   max-width: 16rem !important;
   background-color: var(--color-secondary) !important;
 }
+
+.questionsHeader{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
