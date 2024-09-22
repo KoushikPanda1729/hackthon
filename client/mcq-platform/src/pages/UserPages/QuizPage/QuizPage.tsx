@@ -16,9 +16,9 @@ const QuizPage: FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isQuizStarted, setIsQuizStarted] = useState(false);
 
-  // useDisableCopyPaste();
-  // usePreventInspectElement();
-  // useFullScreenMode();
+  useDisableCopyPaste();
+  usePreventInspectElement();
+  const { enterFullScreen } = useFullScreenMode();
 
   // Fetch quiz data from the backend when the component mounts
   useEffect(() => {
@@ -40,6 +40,7 @@ const QuizPage: FC = () => {
 
   const startQuiz = () => {
     setIsQuizStarted(true);
+    enterFullScreen();
   };
 
   // Render the loading spinner while data is being fetched
@@ -67,6 +68,7 @@ const QuizPage: FC = () => {
       {!isQuizStarted ? (
         <div className={styles.startQuiz}>
           <h1 className={styles.welcomeText}>Welcome to HireLens</h1>
+
           <Button variant="contained" color="primary" onClick={startQuiz}>
             Start Quiz
           </Button>

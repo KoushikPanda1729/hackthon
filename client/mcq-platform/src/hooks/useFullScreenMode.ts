@@ -5,29 +5,30 @@ const useFullScreenMode = () => {
     const elem = document.documentElement; // Get the whole document
 
     if (elem.requestFullscreen) {
-      elem.requestFullscreen(); // Standard fullscreen API
+      elem.requestFullscreen().catch((err) => {
+        console.error("Failed to enable full-screen mode:", err.message);
+      });
     }
   };
 
   const detectFullScreenExit = () => {
     if (!document.fullscreenElement) {
       alert("You have exited full-screen mode. Please return to full-screen.");
-      enterFullScreen(); // Prompt user to re-enter full screen
+      enterFullScreen(); // Prompt user to re-enter full-screen mode
     }
   };
 
   useEffect(() => {
-    // Enter full-screen when the component mounts
-    enterFullScreen();
-
-    // Detect if the user exits full-screen mode
+    // Add fullscreenchange event listener
     document.addEventListener("fullscreenchange", detectFullScreenExit);
 
-    // Cleanup event listeners
+    // Cleanup event listener on unmount
     return () => {
       document.removeEventListener("fullscreenchange", detectFullScreenExit);
     };
   }, []);
+
+  return { enterFullScreen };
 };
 
 export default useFullScreenMode;

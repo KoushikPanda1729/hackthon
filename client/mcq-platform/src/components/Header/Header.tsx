@@ -44,6 +44,7 @@ const Header: FC<HeaderProps> = ({
               color="primary"
               className={styles.logoutButton}
               onClick={logout}
+              startIcon={<LogoutIcon />}
             >
               Log Out
             </Button>
